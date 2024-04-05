@@ -9,13 +9,13 @@ const salt = bcrypt.genSaltSync(10);
 
 
 
-const hashPassword = (userPassword) => {
+const hashUserPassword = (userPassword) => {
     let hashPassword = bcrypt.hashSync(userPassword, salt);
     return hashPassword;
 }
 
 const createNewUser = async (email, password, username) => {
-    let hashPass = hashPassword(password);
+    let hashPass = hashUserPassword(password);
     try {
         await db.User.create({
             username: username,
@@ -30,7 +30,7 @@ const createNewUser = async (email, password, username) => {
 const getUserList = async () => {
     // test relationship
     let newUser = await db.User.findOne({
-        where: { id: 1 },
+        where: { id: 2 },
         raw: true
     })
     console.log(">>> check new users:", newUser);

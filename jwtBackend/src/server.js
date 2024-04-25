@@ -1,32 +1,44 @@
 import express from "express";
 import configViewEngine from "./config/viewEngine";
-import initWebRoutes from "./routes/web.js";
-import initApiRoutes from "./routes/api.js";
-import configCors from "./config/cors.js";
+import initApiRoutes from "./routes/api";
 import bodyParser from "body-parser";
-require('dotenv').config();
-import connection from './config/connectDB.js';
+import configCors from "./config/cors";
+import cookieParser from "cookie-parser";
+
+require("dotenv").config();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
 // config cors
 configCors(app);
 
-// config view engine
+//config view engine
 configViewEngine(app);
 
-// config body-parser
-app.use(bodyParser.json());
+//config body parser
+// app.use(fileUpload());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-// test connection
-connection();
 
-initWebRoutes(app);
+
+//config cookie-parser
+app.use(express.static('src/assets'));
+app.use(cookieParser());
+
+
+//init web routes
 initApiRoutes(app);
 
+//test connection DB
+// connection();
+
+
+app.use((req, res) => {
+    return res.send("404 not found");
+})
 
 app.listen(PORT, () => {
-    console.log("Server is running on http " + PORT);
-})
+    console.log("Backend is running on port " + PORT);
+});

@@ -1,72 +1,121 @@
-import loginRegisterService from '../service/loginRegisterService';
-const testApi = (req, res) => {
-    return res.status(200).json({
-        message: 'ok',
-        data: 'test api'
-
-    });
-}
+import loginRegister from '../service/loginRegisterService';
 
 const handleRegister = async (req, res) => {
     try {
-        if (!req.body.email || !req.body.phone || !req.body.password) {
+        // username, password, phone, email, address
+        if (!req.body.username || !req.body.password || !req.body.email || !req.body.phone || !req.body.address) {
             return res.status(200).json({
-                EM: 'Missing required parameter', // error message
-                EC: '1', // error code 
-                DT: '', // data
+                EM: 'Missing required parameters',
+                EC: '1',
+                DT: '',
             });
         }
+
         if (req.body.password && req.body.password.length < 8) {
             return res.status(200).json({
-                EM: 'Your password must have least 8 letters', // error message
-                EC: '1', // error code 
-                DT: '', // data
+                EM: 'Mật khẩu phải dài hơn 8 ký tự',
+                EC: '1',
+                DT: 'isValidPassword',
             });
         }
 
-        let data = await loginRegisterService.registerNewUser(req.body);
+        if (req.body.phone && req.body.phone.length != 10) {
+            return res.status(200).json({
+                EM: 'Số điện thoại không hợp lệ',
+                EC: '1',
+                DT: 'isValidPhone',
+            });
+        }
+
+
+        let data = await loginRegister.registerNewUser(req.body);
 
         return res.status(200).json({
-            EM: data.EM, // error message
-            EC: data.EC, // error code 
-            DT: '', // data
+            EM: data.EM,
+            EC: data.EC
         });
 
-    } catch (e) {
+    } catch (error) {
         return res.status(500).json({
-            EM: 'error from server', // error message
-            EC: '-1', // error code 
-            DT: '', // data
-        });
+            EM: 'error from server handleRegister',
+            EC: '-1',
+            DT: '',
+        })
     }
-
-}
+};
 
 const handleLogin = async (req, res) => {
     try {
-        let data = await loginRegisterService.handleUserLogin(req.body)
+        let data = await loginRegister.handleUserLogin(req.body);
+        if (data && data.DT && data.DT.access_token) {
+            res.cookie("jwt", data.DT.access_token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+        }
         return res.status(200).json({
-            EM: data.EM, // error message
-            EC: data.EC, // error code 
-            DT: data.DT, // data
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT,
         });
     } catch (error) {
         return res.status(500).json({
-            EM: 'error from server', // error message
-            EC: '-1', // error code 
-            DT: '', // data
+            EM: 'error from server handleLogin',
+            EC: '-1',
+            DT: '',
         });
     }
+};
 
-    // loginRegisterService.handleLogin(req.body)
+const handleLoginAdmin = async (req, res) => {
+    try {
+        let data = await loginRegister.handleAdminLogin(req.body);
+        // set cookies
+        if (data && data.DT && data.DT.access_token) {
+            res.cookie("jwt", data.DT.access_token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+        }
+
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT,
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            EM: 'error from server handleLogin',
+            EC: '-1',
+            DT: '',
+        });
+    }
+};
+
+const handleLogout = (req, res) => {
+    try {
+        res.clearCookie("jwt");
+        return res.status(200).json({
+            EM: 'logout successfully',
+            EC: 0,
+            DT: '',
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            EM: 'error from server handleLogout',
+            EC: '-1',
+            DT: '',
+        });
+    }
+};
+
+const getOrderDetail = (req, res) => {
+
+};
 
 
-
-}
 
 module.exports = {
-    testApi,
     handleRegister,
-    handleLogin
+    handleLogin,
+    handleLogout,
+    getOrderDetail,
 
+    handleLoginAdmin,
 }

@@ -10,17 +10,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      // define association here
+      User.belongsTo(models.Group);
       User.hasMany(models.Order);
     }
   };
+  // Object relational mapping
   User.init({
     email: DataTypes.STRING,
-    password: DataTypes.STRING,
     username: DataTypes.STRING,
+    password: DataTypes.STRING,
     address: DataTypes.STRING,
-    phone: DataTypes.STRING
+    phone: DataTypes.STRING,
+    groupId: DataTypes.INTEGER,
   }, {
-    timestamps: false,
     sequelize,
     modelName: 'User',
   });

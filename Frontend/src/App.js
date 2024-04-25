@@ -1,63 +1,56 @@
-import Nav from './components/Navigation/Nav';
-import { useEffect, useState } from 'react';
-import Login from './components/Login/Login';
+import './App.scss';
+import Nav from './components/Navigation/nav';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import _ from "lodash";
+import React, { useContext } from 'react';
+import AppRoute from './routes/AppRoute';
+import NavAdmin from './components/Admin/Nav/NavAdmin';
+import { Oval } from 'react-loader-spinner';
+import { UserContext } from './context/adminContext';
+import Footer from './components/Navigation/footer';
+import { CartProvider } from "react-use-cart";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  //Link
 } from "react-router-dom";
-import Register from './components/Register/Register';
-import Users from './components/ManagerUsers/Users';
-// import { useEffect } from 'react';
 
 function App() {
-  const [account, setAccount] = useState({});
+  const { user } = useContext(UserContext);
 
-  useEffect(() => {
-    let session = sessionStorage.getItem('account');
-    if (session) {
-      setAccount(JSON.parse(session));
-    }
-  }, []);
   return (
     <Router>
-      <div className='app-container'>
-        {account && !_.isEmpty(account) && account.isAuthenicated &&
-          <Nav />}
+      {user && user.isLoading ?
+        <div className='loading-container'>
+          <Oval
+            height={80}
+            width={80}
+            color="#4fa94d"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            ariaLabel='oval-loading'
+            secondaryColor="#4fa94d"
+            strokeWidth={2}
+            strokeWidthSecondary={2}
 
-        <Switch>
-          <Route path="/news">
-            news
-          </Route>
-          <Route path="/about">
-            about
-          </Route>
-          <Route path="/contact">
-            contact
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/" exact>
-            home
-          </Route>
-          <Route path="*">
-            404 not found
-          </Route>
-        </Switch>
-      </div>
+          />
+          <div>Loading data...</div>
+        </div>
+        :
+        <>
+          <div className='app-header'>
+            <CartProvider>
+              <Nav />
+            </CartProvider>
+            <NavAdmin />
+          </div>
+          <div className='App-container'>
+            <AppRoute />
+          </div>
+        </>
+      }
+      <Footer />
       <ToastContainer
-        position="bottom-center"
+        position="top-center"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -68,9 +61,8 @@ function App() {
         pauseOnHover
         theme="light"
       />
-
-
     </Router>
+
   );
 }
 

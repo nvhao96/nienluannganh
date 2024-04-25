@@ -10,17 +10,25 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Product.hasMany(models.Order_Detail);
+      // define association here
       Product.belongsTo(models.List_Product);
-
+      Product.hasMany(models.Order_Detail);
     }
   };
+  // Object relational mapping
   Product.init({
-    productName: DataTypes.STRING,
-    price: DataTypes.STRING,
-    description: DataTypes.STRING,
+    name: DataTypes.STRING,
+    ingredients: DataTypes.STRING,
+    price: DataTypes.INTEGER,
+    objectOfUse: DataTypes.STRING,
+    img: DataTypes.BLOB,
     quantity: DataTypes.INTEGER,
-    image: DataTypes.STRING
+    uses: DataTypes.STRING,
+    preserve: DataTypes.STRING,
+    pack: DataTypes.STRING,
+    origin: DataTypes.STRING,
+    productionSite: DataTypes.STRING,
+    listProductId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Product',

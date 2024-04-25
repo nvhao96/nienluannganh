@@ -1,0 +1,19 @@
+.image-product {
+    width: 100px;
+    height: 100px;
+}
+
+
+/// Modal Products
+.form-image {
+    position: relative;
+
+    .check-image {
+        img {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            image-rendering: pixelated;
+        }
+    }
+}

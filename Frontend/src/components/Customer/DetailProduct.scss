@@ -1,0 +1,144 @@
+.top-content {
+
+    .img-detail {
+        width: 623px;
+        height: 623px;
+    }
+
+    .right-content {
+
+        .name-product {
+            height: 32px;
+            color: #187733;
+
+        }
+
+        .price {}
+
+        form {
+            width: 300px;
+            text-align: center;
+            position: relative;
+            margin-left: -32px;
+
+            .value-button {
+                display: inline-block;
+                border: 1px solid #ddd;
+                margin: 0px;
+                width: 40px;
+                height: 20px;
+                text-align: center;
+                vertical-align: middle;
+                padding: 11px 0;
+                background: #eee;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+
+                span {
+                    position: absolute;
+                    bottom: 14px;
+                }
+            }
+
+            .value-button:hover {
+                cursor: pointer;
+            }
+
+            .decrease {
+                border-radius: 8px 0 0 8px;
+                padding: 19px;
+                margin-bottom: 5px;
+            }
+
+            .increase {
+                border-radius: 0 8px 8px 0;
+                padding: 19px;
+                margin-bottom: 5px;
+            }
+
+            .number {
+                text-align: center;
+                border: none;
+                border-top: 1px solid #ddd;
+                border-bottom: 1px solid #ddd;
+                margin: 0px;
+                width: 40px;
+                height: 40px;
+            }
+
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+        }
+
+
+
+        .buy {
+            padding: 15px 36px;
+            background-color: #187733;
+            cursor: pointer;
+            max-height: 155px;
+            margin: 10px;
+            width: 298px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 20px;
+            text-align: center;
+            border-radius: 25px;
+
+            &:hover {
+                background: #0e562e;
+            }
+
+        }
+
+        .commit {
+            border: 1px solid #57b1ba;
+            border-radius: 20px;
+            margin: 5px;
+
+            .title-commit {
+                text-align: center;
+                padding: 10px;
+                border-bottom: 1px solid #ccc;
+                font-weight: 600;
+                font-size: 20px;
+                display: block;
+            }
+
+            .icon-content {
+                text-align: center;
+                margin-top: 15px;
+                height: 114px;
+
+                .icon-commit {
+                    background-color: #6ca946;
+                    padding: 10px;
+                    border-radius: 50%;
+                    font-size: 24px;
+                }
+
+                .content-commit {
+                    color: #6ca946;
+                    font-size: 16px;
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+}
+
+.bottom-content {
+
+    .text-detail {
+        font-size: 18px;
+        word-spacing: 2px;
+        margin: 5px;
+    }
+}

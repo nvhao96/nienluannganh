@@ -12,15 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Order.belongsTo(models.User);
+      Order.hasMany(models.Order_Detail);
 
     }
   };
+  // Object relational mapping
   Order.init({
-    userId: DataTypes.STRING,
+    userId: DataTypes.INTEGER,
     address: DataTypes.STRING,
     phone: DataTypes.STRING,
-    totalCost: DataTypes.STRING,
-    pay: DataTypes.STRING
+    totalCost: DataTypes.INTEGER,
+    pay: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Order',

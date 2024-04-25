@@ -1,109 +1,92 @@
-import './Login.scss';
-import { useHistory } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import './Login.scss'
+import { NavLink, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loginUser } from '../../services/userService';
-
+import { UserContext } from '../../context/adminContext';
+import Home from '../Customer/Home';
 
 const Login = (props) => {
+    const { loginContext } = useContext(UserContext);
+
     let history = useHistory();
 
-    const [valueLogin, setValueLogin] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
-
-
-    const defaultObjValidInput = {
-        isValidValueLogin: true,
+    const defaultObjInput = {
+        isValidUsername: true,
         isValidPassword: true,
     }
-    const [objValidInput, setObjValidInput] = useState(defaultObjValidInput);
-
-    const handleCreateNewAccount = () => {
-        history.push("/register");
-    }
+    const [objCheckInput, setObjCheckInput] = useState(defaultObjInput);
 
     const handleLogin = async () => {
-        setObjValidInput(defaultObjValidInput);
-
-        if (!valueLogin) {
-            setObjValidInput({ ...objValidInput, isValidValueLogin: false });
-            toast.error('Please enter your email address or your phone number');
+        setObjCheckInput(defaultObjInput);
+        if (!username) {
+            toast.error("Vui lòng nhập vào tên đăng nhập");
+            setObjCheckInput({ ...defaultObjInput, isValidUsername: false });
             return;
         }
         if (!password) {
-            setObjValidInput({ ...objValidInput, isValidPassword: false });
-            toast.error('Please enter your password');
+            toast.error("Vui lòng nhập vào mật khẩu");
+            setObjCheckInput({ ...defaultObjInput, isValidPassword: false });
             return;
         }
-
-        let response = await loginUser(valueLogin, password);
-        if (response && response.data && +response.data.EC === 0) {
+        let serverData = await loginUser(username, password);
+        if (+serverData.EC === 0) {
+            let email = serverData.DT.email;
+            let username = serverData.DT.username;
+            let phone = serverData.DT.phone;
+            let address = serverData.DT.address;
+            let token = serverData.DT.access_token;
+            let id = serverData.DT.id === undefined ? '' : serverData.DT.id;
             let data = {
-                isAuthenicated: true,
-                token: 'fake token'
+                isAuthenticated: true,
+                token,
+                account: { username, email, phone, address, id }
             }
-            sessionStorage.setItem('account', JSON.stringify(data));
+            loginContext(data);
 
-            history.push('/users')
-            window.location.reload();
+            toast.success(serverData.EM);
+            history.push("/");
+        } else {
+            toast.error(serverData.EM);
         }
-
-        if (response && response.data && +response.data.EC !== 0) {
-            // error
-            toast.error(response.data.EM)
-        }
-
-    }
+    };
 
     const handlePressEnter = (event) => {
-        if (event.key === 'Enter') {
-            // Xử lý sự kiện ở đây
-            // Hoặc gọi hàm xử lý đăng nhập
+        if (event.keyCode === 13 && event.key === 'Enter') {
             handleLogin();
         }
-    }
-    return (
-        <div className="login-container mt-3">
-            <div className="container">
-                <div className="row px-3">
-                    <div className="container-left col-12 d-none col-sm-7 d-sm-block">
-                        <div className='brand'>
-                            2P
-                        </div>
-                        <div className='detail'>
-                            2P helps you purchase authentic products at competitive prices.
-                        </div>
+    };
 
-                    </div>
-                    <div className="container-right col-12 col-sm-5 gap-3 d-flex flex-column py-3 ">
-                        <div className='brand d-sm-none'>
-                            2P
-                        </div>
-                        <input
-                            type='text'
-                            className={objValidInput.isValidValueLogin ? 'form-control' : 'is-invalid form-control'}
-                            placeholder="Email address or phone number"
-                            value={valueLogin}
-                            onChange={(event) => { setValueLogin(event.target.value) }}
-                        />
-                        <input
-                            type='password'
-                            className={objValidInput.isValidPassword ? 'form-control' : 'is-invalid form-control'}
-                            placeholder="Password"
-                            value={password}
-                            onChange={(event) => { setPassword(event.target.value) }}
-                            onKeyDown={(event) => handlePressEnter(event)}
-                        />
-                        <button className="btn btn-primary" onClick={() => handleLogin()}>Login</button>
-                        <span className="text-center">
-                            <a className='forgot-password' href='#'>Forgot your password?</a>
-                        </span>
-                        <hr />
-                        <div className="text-center">
-                            <button className="btn btn-success" onClick={() => handleCreateNewAccount()}>
-                                Create new accout
-                            </button>
+    return (
+        <div className='login-container'>
+            <div className='container'>
+                <div className='row px-3 px-sm-0 '>
+                    <div className='col-3'></div>
+                    <div className='col-9 box-login'>
+                        <h1>Đăng nhập</h1>
+
+                        <div className='content col-10 col-sm-7 d-flex flex-column gap-3 py-3'>
+                            <label><b className='text-white'>Tên đăng nhập:</b></label>
+                            <input
+                                type='text'
+                                className={objCheckInput.isValidUsername ? 'form-control' : 'form-control is-invalid'}
+                                placeholder='username'
+                                value={username}
+                                onChange={(event) => { setUsername(event.target.value) }}
+                            />
+                            <label><b className='text-white'>Mật khẩu:</b></label>
+                            <input
+                                type='password'
+                                className={objCheckInput.isValidPassword ? 'form-control' : 'form-control is-invalid'}
+                                placeholder='Password'
+                                value={password}
+                                onChange={(event) => { setPassword(event.target.value) }}
+                                onKeyDown={(event) => handlePressEnter(event)}
+                            />
+                            <button className='btn btn-secondary' onClick={() => handleLogin()}>Đăng nhập</button>
+                            <span className='text-center text-white'>Chưa có tài khoản?<NavLink to='/register'>Đăng ký ngay.</NavLink></span>
                         </div>
 
                     </div>
@@ -111,6 +94,6 @@ const Login = (props) => {
             </div>
         </div>
     )
-}
+};
 
 export default Login;

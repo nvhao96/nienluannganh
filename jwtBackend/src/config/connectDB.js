@@ -3,7 +3,10 @@ const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize('jwt', 'root', 'null', {
   host: 'localhost',
   dialect: 'mysql',
-  port: 8111
+  port: 8111,
+  // define: {
+  //   timestamps: false
+  // }
 });
 
 const connection = async () => {

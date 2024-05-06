@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING,
     totalCost: DataTypes.INTEGER,
     pay: DataTypes.INTEGER,
+    createdAt: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'Order',

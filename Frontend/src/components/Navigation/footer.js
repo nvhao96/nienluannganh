@@ -1,5 +1,5 @@
 import './footer.scss';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Footer = (props) => {
     return (
@@ -28,7 +28,7 @@ const Footer = (props) => {
                         </div>
                         <div className='col-3 box-footer'>
                             <h5 className='text-center'>Tổng đài CSKH</h5>
-                            <NavLink to="/">Hỗ trợ đặt hàng và khiếu nại 0889946303</NavLink>
+                            <NavLink to="/">Hỗ trợ đặt hàng và khiếu nại 0812020906</NavLink>
                             <div></div>
                             <div></div>
                             <div></div>

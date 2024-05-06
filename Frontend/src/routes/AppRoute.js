@@ -1,9 +1,9 @@
 import {
     Switch,
     Route,
-    useHistory
+
 } from "react-router-dom";
-import { useContext } from 'react';
+// import { useContext } from 'react';
 import Login from '../components/Login/Login';
 import Register from '../components/Register/Register';
 import LoginAdmin from '../components/Admin/LoginAdmin/LoginAdmin';

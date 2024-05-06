@@ -1,5 +1,7 @@
-import db from "../models/index";
+import db, { sequelize } from "../models/index";
 import bcrypt from 'bcryptjs';
+const { Op } = require("sequelize");
+
 
 const getAllUser = async () => {
     try {
@@ -411,6 +413,122 @@ const getMyOrderDetail = async (idOrder) => {
     }
 };
 
+const statisticMoneyMonth = async (month) => {
+    try {
+        const currentYear = new Date().getFullYear();
+        let data = await db.Order.findAll({
+            where: {
+                // status: {
+                //     [Op.notIn]: [
+                //         'Đã hủy đơn',
+                //         'Chưa xác nhận'
+                //     ]
+                // },
+                createdAt: {
+                    [Op.and]: [
+                        sequelize.literal(`MONTH(createdAt) = ${month}`),
+                        sequelize.literal(`YEAR(createdAt) = ${currentYear}`)
+                    ]
+                }
+            }
+        });
+        return {
+            Mess: 'statistics money month',
+            ErrC: 0,
+            Data: data,
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            Mess: 'statistic money month failed',
+            ErrC: 1,
+            Data: '',
+        }
+    }
+};
+
+const statisticMoneyYear = async (year) => {
+    try {
+        let data = await db.Order.findAll({
+            where: {
+                // status: {
+                //     [Op.notIn]: [
+                //         'Đã hủy đơn',
+                //         'Chưa xác nhận'
+                //     ]
+                // },
+                createdAt: {
+                    [Op.and]: [
+                        sequelize.literal(`YEAR(createdAt) = ${year}`)
+                    ]
+                }
+            }
+        });
+        return {
+            Mess: 'statistics money year',
+            ErrC: 0,
+            Data: data,
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            Mess: 'statistic money year failed',
+            ErrC: 1,
+            Data: '',
+        }
+    }
+};
+
+const getDataStatisticMoneyMonth = async (month) => {
+    try {
+        const currentYear = new Date().getFullYear();
+        let data = await db.Order.findAll({
+            where: {
+                // status: {
+                //     [Op.in]: [
+                //         'Đã xác nhận'
+                //     ]
+                // },
+                createdAt: {
+                    [Op.and]: [
+                        sequelize.literal(`MONTH(\`Order\`.\`createdAt\`) = ${month}`),
+                        sequelize.literal(`YEAR(\`Order\`.\`createdAt\`) = ${currentYear}`)
+                    ]
+                }
+            },
+            include: { model: db.User, attributes: ['username'] }
+        })
+        return data;
+    } catch (error) {
+        console.log(error);
+        return 'error get data statistic money month';
+    }
+};
+
+const getDataStatisticMoneyYear = async (year) => {
+    try {
+        let data = await db.Order.findAll({
+            where: {
+                // status: {
+                //     [Op.in]: [
+                //         'Đã xác nhận'
+                //     ]
+                // },
+                createdAt: {
+                    [Op.and]: [
+                        sequelize.literal(`YEAR(\`Order\`.\`createdAt\`) = ${year}`)
+                    ]
+                }
+            },
+            include: { model: db.User, attributes: ['username'] }
+        })
+        return data;
+    } catch (error) {
+        console.log(error);
+        return 'error get data statistic money year';
+    }
+};
+
 module.exports = {
     getAllUser,
     createUser,
@@ -423,4 +541,8 @@ module.exports = {
     getAllMyOrder,
     getMyOrderWithPagination,
     getMyOrderDetail,
+    statisticMoneyMonth,
+    statisticMoneyYear,
+    getDataStatisticMoneyMonth,
+    getDataStatisticMoneyYear
 }

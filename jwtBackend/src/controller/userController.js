@@ -209,6 +209,69 @@ const getMyOrderDetail = async (req, res) => {
         });
     }
 };
+const statisticMoneyMonth = async (req, res) => {
+    try {
+        let data = await userApiService.statisticMoneyMonth(req.body.month);
+        let totalCost = 0;
+        data.Data.map((item) => {
+            totalCost += item.totalCost;
+        });
+        return res.status(200).json({
+            Mess: data.Mess,
+            ErrC: data.ErrC,
+            Data: totalCost,
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            Mess: 'Error statistic money month',
+            ErrC: -1,
+            Data: '',
+        });
+    }
+};
+
+const statisticMoneyYear = async (req, res) => {
+    try {
+        let data = await userApiService.statisticMoneyYear(req.body.year);
+        let totalCost = 0;
+        data.Data.map((item) => {
+            totalCost += item.totalCost;
+        });
+        return res.status(200).json({
+            Mess: data.Mess,
+            ErrC: data.ErrC,
+            Data: totalCost,
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            Mess: 'Error statistic money year',
+            ErrC: -1,
+            Data: '',
+        });
+    }
+};
+
+const getDataStatisticMoneyMonth = async (req, res) => {
+    try {
+        let data = await userApiService.getDataStatisticMoneyMonth(req.body.month);
+        return res.status(200).json({ data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json('error get data statistic money month');
+    }
+};
+
+const getDataStatisticMoneyYear = async (req, res) => {
+    try {
+        let data = await userApiService.getDataStatisticMoneyYear(req.body.year);
+        return res.status(200).json({ data });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json('error get data statistic money year');
+    }
+};
 
 
 module.exports = {
@@ -221,4 +284,9 @@ module.exports = {
     readOrderDetail,
     getMyOrder,
     getMyOrderDetail,
+    statisticMoneyMonth,
+    statisticMoneyYear,
+    getDataStatisticMoneyMonth,
+    getDataStatisticMoneyYear
+
 }

@@ -1,5 +1,5 @@
-import { useEffect, useContext } from "react";
-import { useHistory, Redirect } from 'react-router-dom';
+import { useContext } from "react";
+import { Redirect } from 'react-router-dom';
 import { UserContext } from '../context/adminContext';
 import {
     Route

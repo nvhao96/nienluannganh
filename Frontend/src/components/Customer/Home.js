@@ -2,7 +2,7 @@ import './Home.scss';
 import { useEffect, useState, useContext } from "react";
 import { fetAllProductHomePage } from '../../services/productService';
 import ReactPaginate from "react-paginate";
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import numeral from 'numeral';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../context/adminContext';
@@ -43,7 +43,6 @@ const Home = (props) => {
     const formatCash = (price) => {
         return numeral(price).format('0,0');
     }
-
     return (
         <>
             <div className="container">

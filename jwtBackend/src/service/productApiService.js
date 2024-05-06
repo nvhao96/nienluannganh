@@ -258,38 +258,41 @@ const createListProductService = async (data) => {
     }
 };
 
-// const sreachProduct =  async (name) => {
-//     try{
-//         let products =  await db.Products.findAll({});
-//         const data = await products.filter((item) =>
-//         item.name.toLocaleLowerCase().includes(name.toLocaleLowerCase())
-//       );
-//        return {
-//         EM:'Tìm kiếm thành công',
-//         EC : 0 ,
-//         DT : data
-//        } ;  
+const sreachProductService = async (name) => {
+    try {
+        let products = await db.Products.findAll({});
+        const data = await products.filter((item) =>
+            item.name.toLocaleLowerCase().includes(name.toLocaleLowerCase())
+        );
+        return {
+            EM: 'Tìm kiếm thành công',
+            EC: 0,
+            DT: data
+        };
 
-//     }catch{
-//         return {
-//             EM:'Tìm kiếm thất bại',
-//             EC : 0 ,
-//             DT : data  
-//         }
+    } catch {
+        return {
+            EM: 'Tìm kiếm thất bại',
+            EC: 0,
+            DT: data
+        }
 
-//     }
+    }
 
-// }
+}
 
 //cart
 const addCartService = async (data) => {
     try {
+        let day = new Date();
+        console.log("check day", day);
         await db.Order.create({
             userId: data.account.id,
             address: data.account.address,
             phone: data.account.phone,
             totalCost: data.cartTotal,
             pay: data.quantity,
+            createdAt: day,
         });
         return {
             EM: 'Đặt hàng thành công',
@@ -338,6 +341,7 @@ const addOrderDetailService = async (data, user) => {
         let order = await db.Order.findOne({
             where: { userId: user.id }
         });
+        console.log(order);
         if (order) {
             let price = await db.Order.findOne({
                 where: { userId: order.dataValues.userId },
@@ -384,9 +388,12 @@ module.exports = {
     deleteProduct,
     getListProductService,
     updateProduct,
+    sreachProductService,
     deleteFile,
     createListProductService,
+
     addCartService,
+
     checkOrderService,
     addOrderDetailService,
 }

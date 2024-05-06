@@ -4,8 +4,10 @@ import { detailProduct } from '../../services/customerService';
 import './DetailProduct.scss';
 import numeral from 'numeral';
 import { useCart } from 'react-use-cart';
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 const DetailProduct = (props) => {
-
+    const location = useLocation();
+    const [onChange, isOnChange] = useState("");
     const [quantity, setQuantity] = useState(1);
 
     const { name, id } = useParams();
@@ -24,8 +26,10 @@ const DetailProduct = (props) => {
     }
 
     useEffect(() => {
+
         fetchProducts();
-    }, [quantity]);
+
+    }, [quantity, location.pathname]);
 
     const handleOnclickIncrease = () => {
         setQuantity(preQuantity => preQuantity + 1);
@@ -58,9 +62,9 @@ const DetailProduct = (props) => {
                             <h4 className="price col-12 mt-5">{formatCash(product.price)} vnđ</h4>
                             <form className="col-12 mt-4">
                                 <span>Chọn số lượng: </span>
-                                <div className="value-button decrease" onClick={() => handleOnclickDecrease()}><span>-</span></div>
+                                <div className="value-button decrease" onClick={() => handleOnclickDecrease()}><span style={{ left: "163px" }}>-</span></div>
                                 <input type="number" className="number" value={quantity} onChange={(event) => handleOnChangeInput(event)} />
-                                <div className="value-button increase" onClick={() => handleOnclickIncrease()}><span>+</span></div>
+                                <div className="value-button increase" onClick={() => handleOnclickIncrease()}><span style={{ left: "240px" }}>+</span></div>
                             </form>
                             <div className="col-4 buy mt-3" onClick={() => handleClickBuy(product)}>
                                 CHỌN MUA

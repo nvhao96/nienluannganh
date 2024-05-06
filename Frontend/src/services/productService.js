@@ -28,6 +28,10 @@ const updateProduct = (productData) => {
     });
 }
 
+const searchProduct = (productName) => {
+    return axios.get(`/api/search/products?name=${productName}`);
+};
+
 
 const fetchListProduct = () => {
     return axios.get('/api/admin/products/listProduct');
@@ -45,4 +49,5 @@ export {
     updateProduct,
     fetchListProduct,
     addListProduct,
+    searchProduct
 };

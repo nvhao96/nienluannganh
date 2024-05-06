@@ -17,6 +17,7 @@ const getOrderDetail = () => {
 }
 
 const addCart = (dataUser, dataProduct, quantity, cartTotal) => {
+    console.log(dataUser, dataProduct, quantity, cartTotal);
     return axios.post(`/api/products/addCart`, { ...dataUser, ...dataProduct, quantity, cartTotal });
 }
 
@@ -29,6 +30,7 @@ const checkOrder = (dataUser) => {
 }
 
 const addOrderDetail = (dataProduct) => {
+    console.log(dataProduct);
     return axios.post(`/api/products/orderDetail`, dataProduct);
 }
 

@@ -21,13 +21,15 @@ const initApiRoutes = (app) => {
     router.get("/products/read", productController.readProductHomePage);
     router.post("/products/addCart", checkUserJWT, productController.addCart);
     router.post("/products/orderDetail", checkUserJWT, productController.addOrderDetail);
+    router.get("search/:name", productController.searchProduct);
     router.post("/checkOrder", productController.checkOrder);
+
     // router.get("/shoppingCart", apiController.getOrderDetail);
     router.get("/myOrder", checkUserJWT, userController.getMyOrder);
     router.post("/myOrder/:id", checkUserJWT, userController.getMyOrderDetail);
 
     // Admin users routes
-    // router.all('*', checkAdminJWT);
+
     router.post("/admin", apiController.handleLoginAdmin);
     router.get("/admin/users/read", checkAdminJWT, userController.read);
     router.post("/admin/users/create", checkAdminJWT, userController.create);
@@ -44,10 +46,15 @@ const initApiRoutes = (app) => {
     router.get("/admin/products/listProduct", productController.getListProduct);
     router.post("/admin/products/listProduct/create", checkAdminJWT, productController.createListProduct);
 
+    // admin order
     router.get("/admin/order/read", checkAdminJWT, userController.readOrder);
     router.post("/admin/order/detail", checkAdminJWT, userController.readOrderDetail);
 
-
+    // admin statistic
+    router.post('/statisticsMonth', userController.statisticMoneyMonth);
+    router.post('/statisticsYear', checkAdminJWT, userController.statisticMoneyYear);
+    router.post('/getData/moneyMonth', userController.getDataStatisticMoneyMonth);
+    router.post('/getData/moneyYear', userController.getDataStatisticMoneyYear);
     return app.use("/api/", router);
 };
 

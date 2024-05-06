@@ -41,7 +41,16 @@
                 span {
                     position: absolute;
                     bottom: 14px;
+                    // left: 240px;
                 }
+
+                .decrease {
+                    border-radius: 8px 0 0 8px;
+                    padding: 19px;
+                    margin-bottom: 5px;
+                    left: 163px;
+                }
+
             }
 
             .value-button:hover {
@@ -52,12 +61,14 @@
                 border-radius: 8px 0 0 8px;
                 padding: 19px;
                 margin-bottom: 5px;
+                // left: 163px;
             }
 
             .increase {
                 border-radius: 0 8px 8px 0;
                 padding: 19px;
                 margin-bottom: 5px;
+                // left: 240px;
             }
 
             .number {

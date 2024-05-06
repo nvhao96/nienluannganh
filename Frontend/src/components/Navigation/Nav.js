@@ -4,6 +4,7 @@ import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { fetchListProduct } from '../../services/productService';
 import { logoutUser } from '../../services/userService';
 import { UserContext } from '../../context/adminContext';
+import SearchProduct from "./search";
 import { useCart } from "react-use-cart";
 
 const Nav = (props) => {
@@ -49,10 +50,6 @@ const Nav = (props) => {
         history.push('/');
     };
 
-    // const handleClickListProduct = (data) => {
-    //     console.log(data);
-    //     history.push(`/product/${data.categoryName}/${data.id}`);
-    // };
 
     const handleLogout = async () => {
         let data = await logoutUser();
@@ -79,9 +76,11 @@ const Nav = (props) => {
                                 <div className='topnav-content1'>
                                     <div className='image-logo' onClick={() => handleClickImageTextLogo()}></div>
                                     <div className='text-logo' onClick={() => handleClickImageTextLogo()}>2P Provide Product</div>
-                                    <div className='search d-none d-lg-block'>
-                                        <input className='input-search' type='text' placeholder='Tìm kiếm sản phẩm...' />
-                                        <i className="fa fas fa-search search-icon"></i>
+                                    <div className='search d-lg-block'>
+                                        {/* <input className='input-search' type='text' placeholder='Tìm kiếm sản phẩm...' /> */}
+                                        {/* <i className="fa fas fa-search search-icon" onClick={() => handleSearch()}></i> */}
+                                        <SearchProduct />
+
                                     </div>
                                     <div className='cart' onClick={() => handleClickShoppingCarrt()}>
                                         <i className="shopping-icon fa fas fa-shopping-cart position-relative">
@@ -156,10 +155,10 @@ const Nav = (props) => {
                                             </li>
                                         </ul>
                                     </div>
-                                    <form className="d-flex d-lg-none d-block w-50 search-mb" role="search">
-                                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                                        <button className="btn btn-outline-dark" type="submit">Search</button>
-                                    </form>
+                                    {/* <form className="d-flex d-lg-none d-block w-50 search-mb" role="search">
+                                
+                                        <SearchProduct />
+                                    </form> */}
                                 </div>
                             </div>
                         </div>

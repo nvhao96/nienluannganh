@@ -145,6 +145,23 @@ const createListProduct = async (req, res) => {
     }
 };
 
+const searchProduct = async (req, res) => {
+    try {
+        const data = await productApiService.searchProductService(req.params.name);
+        return res.status(200).json({
+            EM: 'data.EM',
+            EC: '0',
+            DT: ''
+        })
+    } catch {
+        return res.status(500).json({
+            EM: 'lỗi không tìm thấy',
+            EC: '-1',
+            DT: ''
+        })
+    }
+}
+
 const addCart = async (req, res) => {
     try {
         let data = await productApiService.addCartService(req.body);
@@ -243,6 +260,7 @@ module.exports = {
     updateProducts,
     createListProduct,
     readProductHomePage,
+    searchProduct,
     addCart,
     updateCart,
     checkOrder,
